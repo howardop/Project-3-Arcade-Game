@@ -22,7 +22,8 @@ var Engine = (function(global) {
         win = global.window,
         canvas = doc.createElement('canvas'),
         ctx = canvas.getContext('2d'),
-        lastTime;
+        lastTime,
+        animationFrameId;  // Used to cancel animation when player wins
 
     canvas.width = 505;
     canvas.height = 606;
@@ -55,9 +56,22 @@ var Engine = (function(global) {
         /* Use the browser's requestAnimationFrame function to call this
          * function again as soon as the browser is able to draw another frame.
          */
-        win.requestAnimationFrame(main);
+        if (player.gameOver) {
+            console.log('Game Over!')
+            win.cancelAnimationFrame(animationFrameId);
+            winnerPopUp()
+        } else {
+            animationFrameId = win.requestAnimationFrame(main);
+        }
     }
 
+    // Start new game
+    document.addEventListener('startNewGame', function() {
+        player.reset();
+        player.gameOver = false;
+        win.requestAnimationFrame(main);
+
+    });
     /* This function does some initial setup that should only occur once,
      * particularly setting the lastTime variable that is required for the
      * game loop.
@@ -79,7 +93,6 @@ var Engine = (function(global) {
      */
     function update(dt) {
         updateEntities(dt);
-        // checkCollisions();
     }
 
     /* This is called by the update function and loops through all of the
@@ -164,6 +177,19 @@ var Engine = (function(global) {
         // noop
     }
 
+    function winnerPopUp() {
+        ctx.fillStyle = 'rgba(0,0,0,0.7)';
+        ctx.fillRect(50.5, 2*83, 400,200);
+        ctx.fillStyle = 'white';
+        ctx.font='65px arial';
+        ctx.textAlign = 'center';
+        ctx.fillText('You Win!', canvas.width/2, .45*canvas.height);
+        ctx.font = '25px arial';
+        ctx.fillText('Press <Enter> to play another game', canvas.width/2,9*canvas.height/16,350);
+    }
+
+
+
     /* Go ahead and load all of the images we know we're going to need to
      * draw our game level. Then set init as the callback method, so that when
      * all of these images are properly loaded our game will start.
@@ -173,7 +199,8 @@ var Engine = (function(global) {
         'images/water-block.png',
         'images/grass-block.png',
         'images/enemy-bug.png',
-        'images/char-boy.png'
+        'images/char-boy.png',
+        'images/char-pink-girl.png'
     ]);
     Resources.onReady(init);
 
@@ -182,4 +209,6 @@ var Engine = (function(global) {
      * from within their app.js files.
      */
     global.ctx = ctx;
+
+
 })(this);

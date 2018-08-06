@@ -1,6 +1,12 @@
 frontend-nanodegree-arcade-game
 ===============================
 
-Students should use this [rubric](https://review.udacity.com/#!/projects/2696458597/rubric) for self-checking their submission. Make sure the functions you write are **object-oriented** - either class functions (like Player and Enemy) or class prototype functions such as Enemy.prototype.checkCollisions, and that the keyword 'this' is used appropriately within your class and class prototype functions to refer to the object the function is called upon. Also be sure that the **readme.md** file is updated with your instructions on both how to 1. Run and 2. Play your arcade game.
+This game is a simplified version of the Frogger arcade game.  The little girl must cross the road without being hit by one of the bugs.  
 
-For detailed instructions on how to get started, check out this [guide](https://docs.google.com/document/d/1v01aScPjSWCCWQLIpFqvg3-vXLH2e8_SZQKC8jNO0Dc/pub?embedded=true).
+The game starts immediately when the index.html file is loaded by the browser.  The game is currently configured to have 3 bugs.  However, this can be changed by setting the numEnemies variable in js/app.js.  The placement and speed of each bug is determined randomly at the start of each game.
+
+The player moves the little girl by using the left, right, up, and down arrow keys.  
+
+If the little girl collides with a bug before crossing the road, she is repositioned to her original spot and continues to try to cross the road.
+
+If the little girl successfuly crosses the road, a pop-up is displayed announcing that player has won the game.  The player can then start a new game by hitting the ENTER key. 
